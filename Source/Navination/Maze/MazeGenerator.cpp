@@ -5,13 +5,31 @@
 AMazeGenerator::AMazeGenerator()
     : Super()
 {
+    MazeActorClass = AMazeActor::StaticClass();
 }
 
 void AMazeGenerator::BeginPlay()
 {
     Super::BeginPlay();
-    FMazeGrid Grid = GenerateMaze(MazeWidth, MazeHeight, Seed);
+    
+    const FMazeGrid Grid = GenerateMaze(MazeWidth, MazeHeight, Seed);
+    
     UE_LOG(LogNavination, Log, TEXT("Maze has width: %d, height: %d"), Grid.Width, Grid.Height);
+    
+    FActorSpawnParameters SpawnParams;
+    SpawnParams.Owner = this;
+
+    const FVector SpawnLocation = GetActorLocation();
+    const FRotator SpawnRotation = GetActorRotation();
+
+    if (AMazeActor* MazeActor = GetWorld()->SpawnActor<AMazeActor>(
+            MazeActorClass,
+            SpawnLocation,
+            SpawnRotation,
+            SpawnParams))
+    {
+        MazeActor->BuildFromGrid(Grid);
+    }
 }
 
 int32 AMazeGenerator::FindRoot(TArray<int32>& Parent, int32 Node)

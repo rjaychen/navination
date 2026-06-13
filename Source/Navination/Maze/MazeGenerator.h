@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Maze/MazeTypes.h"
+#include "Maze/MazeActor.h"
 #include "MazeGenerator.generated.h"
 
 UCLASS()
@@ -21,15 +22,18 @@ class AMazeGenerator : public AActor
         UPROPERTY(EditAnywhere)
         int32 Seed = 42;
 
+        UPROPERTY(EditAnywhere)
+        TSubclassOf<AMazeActor> MazeActorClass;
+
         FMazeGrid GenerateMaze(int32 Width, int32 Height, int32 Seed);
 
     protected:
         virtual void BeginPlay() override;
 
     private:
-        int32 FindRoot(TArray<int32>& Parent, int32 Node);
+        static int32 FindRoot(TArray<int32>& Parent, int32 Node);
 
-        void Union(TArray<int32>& Parent, int32 A, int32 B);
+        static void Union(TArray<int32>& Parent, int32 A, int32 B);
         
-        TPair<int32, int32> BFSLongestPath(const FMazeGrid& Grid, int32 StartX, int32 StartY);
+        static TPair<int32, int32> BFSLongestPath(const FMazeGrid& Grid, int32 StartX, int32 StartY);
 };
