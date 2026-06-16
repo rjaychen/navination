@@ -3,7 +3,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Components/InstancedStaticMeshComponent.h"
-#include "Maze/MazeTypes.h"
+#include "MazeTypes.h"
 #include "MazeActor.generated.h"
 
 UCLASS()
@@ -27,6 +27,13 @@ class AMazeActor : public AActor
 
         UPROPERTY(EditAnywhere)
         TObjectPtr<UStaticMesh> WallMesh;
+
+        UPROPERTY(VisibleAnywhere) TObjectPtr<UInstancedStaticMeshComponent> StartISMC;
+        UPROPERTY(VisibleAnywhere) TObjectPtr<UInstancedStaticMeshComponent> GoalISMC;
+        UPROPERTY(EditAnywhere)    TObjectPtr<UStaticMesh> StartMesh;
+        UPROPERTY(EditAnywhere)    TObjectPtr<UStaticMesh> GoalMesh;
+
+        FMazeGrid CurrentGrid;
 
         void BuildFromGrid(const FMazeGrid& Grid);
 };

@@ -1,6 +1,7 @@
+#include "MazeGenerator.h"
 #include "Navination.h"
 #include "MazeTypes.h"
-#include "MazeGenerator.h"
+
 
 AMazeGenerator::AMazeGenerator()
     : Super()
@@ -11,25 +12,6 @@ AMazeGenerator::AMazeGenerator()
 void AMazeGenerator::BeginPlay()
 {
     Super::BeginPlay();
-    
-    const FMazeGrid Grid = GenerateMaze(MazeWidth, MazeHeight, Seed);
-    
-    UE_LOG(LogNavination, Log, TEXT("Maze has width: %d, height: %d"), Grid.Width, Grid.Height);
-    
-    FActorSpawnParameters SpawnParams;
-    SpawnParams.Owner = this;
-
-    const FVector SpawnLocation = GetActorLocation();
-    const FRotator SpawnRotation = GetActorRotation();
-
-    if (AMazeActor* MazeActor = GetWorld()->SpawnActor<AMazeActor>(
-            MazeActorClass,
-            SpawnLocation,
-            SpawnRotation,
-            SpawnParams))
-    {
-        MazeActor->BuildFromGrid(Grid);
-    }
 }
 
 int32 AMazeGenerator::FindRoot(TArray<int32>& Parent, int32 Node)

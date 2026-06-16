@@ -25,6 +25,9 @@ public class Navination : ModuleRules
 
 		PublicIncludePaths.AddRange(new string[] {
 			"Navination",
+			"Navination/Abilities",
+			"Navination/Gameplay",
+			"Navination/Maze",
 			"Navination/Variant_Horror",
 			"Navination/Variant_Horror/UI",
 			"Navination/Variant_Shooter",

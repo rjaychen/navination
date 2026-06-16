@@ -2,8 +2,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "Maze/MazeTypes.h"
-#include "Maze/MazeActor.h"
+#include "MazeTypes.h"
+#include "MazeActor.h"
 #include "MazeGenerator.generated.h"
 
 UCLASS()
@@ -25,7 +25,7 @@ class AMazeGenerator : public AActor
         UPROPERTY(EditAnywhere)
         TSubclassOf<AMazeActor> MazeActorClass;
 
-        FMazeGrid GenerateMaze(int32 Width, int32 Height, int32 Seed);
+        static FMazeGrid GenerateMaze(int32 Width, int32 Height, int32 Seed);
 
     protected:
         virtual void BeginPlay() override;
