@@ -2,27 +2,23 @@
 
 #include "CoreMinimal.h"
 #include "Abilities/AbilityComponent.h"
-#include "TeleportAbility.generated.h"
+#include "StopTimeAbility.generated.h"
 
 class UAnimMontage;
-class UStaticMesh;
 
 UCLASS(ClassGroup=(Abilities), meta=(BlueprintSpawnableComponent))
-class NAVINATION_API UTeleportAbility : public UAbilityComponent
+class NAVINATION_API UStopTimeAbility : public UAbilityComponent
 {
     GENERATED_BODY()
 
 public:
-    UTeleportAbility();
+    UStopTimeAbility();
 
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Ability|Teleport")
-    TObjectPtr<UStaticMesh> BeaconMesh;
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Ability|Timing")
+    float SlowDuration = 3.0f;
 
-    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Ability|Teleport")
-    float BeaconScale = 0.35f;
-
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Ability|Teleport")
-    bool bIsMarked = false;
+    UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Ability|Timing")
+    float TimeDilation = 0.3f;
 
     UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Ability|Animation")
     TObjectPtr<UAnimMontage> AbilityMontage;
@@ -33,15 +29,15 @@ public:
     UFUNCTION(BlueprintImplementableEvent, Category="Ability|Effects", meta=(DisplayName="On Screen Effect"))
     void BP_PlayScreenEffect();
 
-    void ClearMarkedLocation();
+    static bool WasStopTimeActivatedRecently(const UWorld* World, float WindowSeconds);
+
+    void RestoreTimeDilation();
 
 protected:
     virtual bool ActivateAbility() override;
+    virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 private:
-    FVector MarkedLocation = FVector::ZeroVector;
-    TWeakObjectPtr<AActor> BeaconActor;
-
-    void SpawnBeacon();
-    void DestroyBeacon();
+    double SlowEndRealTime = -1.0;
+    static double LastActivationRealTime;
 };

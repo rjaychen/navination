@@ -17,16 +17,28 @@ public class Navination : ModuleRules
 			"AIModule",
 			"StateTreeModule",
 			"GameplayStateTreeModule",
+			"ProceduralMeshComponent",
 			"UMG",
-			"Slate"
+			"Slate",
+			"SlateCore"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] { });
 
+		if (Target.bBuildEditor)
+		{
+			PrivateDependencyModuleNames.AddRange(new string[] {
+				"UnrealEd",
+				"AutomationTest"
+			});
+		}
+
 		PublicIncludePaths.AddRange(new string[] {
+			"Navination/Tests",
 			"Navination",
 			"Navination/Abilities",
 			"Navination/Gameplay",
+			"Navination/UI",
 			"Navination/Maze",
 			"Navination/Variant_Horror",
 			"Navination/Variant_Horror/UI",
